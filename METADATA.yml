@@ -1,0 +1,8 @@
+type: engine
+name: llm
+path: top/engine
+gitlink: https://github.com/laquereric/engine-llm.git
+repo_urls:
+  github: https://github.com/laquereric/engine-llm
+team:
+  - LLM / AI

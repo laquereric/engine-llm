@@ -1,0 +1,70 @@
+<% content_for :tab_navigation do %>
+  <%= ds_tab_navigation %>
+<% end %>
+
+<div class="max-w-2xl mx-auto py-6 px-4">
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-2xl font-bold text-gray-900">Settings</h1>
+    <div class="flex items-center gap-3">
+      <a href="<%= engine_llm.preferences_path %>" class="text-sm text-primary-600 hover:text-primary-700 font-medium">LLM Preferences</a>
+      <a href="<%= engine_llm.conversations_path %>" class="text-sm text-gray-500 hover:text-gray-700">Back to Chat</a>
+    </div>
+  </div>
+
+  <%= ds_card do %>
+    <h2 class="text-lg font-semibold text-gray-900 mb-4">Model Configuration</h2>
+    <%= form_with url: engine_llm.settings_path, method: :patch, local: true do |f| %>
+      <div class="space-y-4">
+        <div>
+          <label for="model" class="block text-sm font-medium text-gray-700 mb-1">Model</label>
+          <select name="model" id="model" class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500">
+            <% @model_groups.each do |group| %>
+              <% configured = @api_keys[group[:env]] %>
+              <optgroup label="<%= group[:provider] %><%= " \u2713" if configured %>">
+                <% group[:models].each do |m| %>
+                  <option value="<%= m[:value] %>" <%= "selected" if @model == m[:value] %><%= " disabled" unless configured || m[:free] %>><%= m[:label] %><%= " (Free)" if m[:free] && !m[:label].include?("Free") %></option>
+                <% end %>
+              </optgroup>
+            <% end %>
+          </select>
+          <p class="mt-1 text-xs text-gray-500">Select which LLM model to use for chat completions.</p>
+        </div>
+
+        <div>
+          <label for="temperature" class="block text-sm font-medium text-gray-700 mb-1">Temperature</label>
+          <input type="number" name="temperature" id="temperature" value="<%= @temperature %>" min="0" max="2" step="0.1"
+                 class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500">
+          <p class="mt-1 text-xs text-gray-500">Controls randomness. Lower values are more focused; higher values are more creative (0.0 - 2.0).</p>
+        </div>
+
+        <div>
+          <label for="max_tokens" class="block text-sm font-medium text-gray-700 mb-1">Max Tokens</label>
+          <input type="number" name="max_tokens" id="max_tokens" value="<%= @max_tokens %>" min="1" max="128000" step="1"
+                 class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500">
+          <p class="mt-1 text-xs text-gray-500">Maximum number of tokens in the response.</p>
+        </div>
+
+        <div class="pt-2">
+          <%= f.submit "Save Settings", class: "inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-primary-600 rounded-md hover:bg-primary-700 cursor-pointer" %>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+
+  <div class="mt-6">
+    <%= ds_card do %>
+      <h2 class="text-lg font-semibold text-gray-900 mb-4">API Keys</h2>
+      <p class="text-sm text-gray-500 mb-3">
+        API keys are configured via environment variables. Edit <code class="text-xs bg-gray-100 px-1 py-0.5 rounded">docker/.env.secrets</code> to set them.
+      </p>
+      <div class="space-y-2">
+        <% @api_keys.each do |key, is_set| %>
+          <div class="flex justify-between items-center text-sm">
+            <code class="text-xs bg-gray-100 px-1.5 py-0.5 rounded"><%= key %></code>
+            <%= ds_badge label: (is_set ? "Configured" : "Not set"), color: (is_set ? :green : :gray) %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>

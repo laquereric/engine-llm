@@ -1,0 +1,114 @@
+<% content_for :tab_navigation do %>
+  <%= ds_tab_navigation %>
+<% end %>
+
+<div class="max-w-2xl mx-auto py-6 px-4">
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-2xl font-bold text-gray-900">LLM Preferences</h1>
+    <a href="<%= engine_llm.conversations_path %>" class="text-sm text-gray-500 hover:text-gray-700">Back to Chat</a>
+  </div>
+
+  <%= ds_card do %>
+    <h2 class="text-lg font-semibold text-gray-900 mb-4">Default Model & Parameters</h2>
+    <%= form_with url: engine_llm.preferences_path, method: :patch, local: true do |f| %>
+      <div class="space-y-4">
+        <div>
+          <label for="default_model_id" class="block text-sm font-medium text-gray-700 mb-1">Default Model</label>
+          <select name="default_model_id" id="default_model_id" class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500">
+            <% @providers.each do |provider| %>
+              <% configured = @api_keys[provider.env_key] %>
+              <optgroup label="<%= provider.name %><%= " \u2713" if configured %>">
+                <% provider.provider_models.active.ordered.each do |m| %>
+                  <option value="<%= m.id %>"
+                    <%= "selected" if @preference.default_model_id == m.id %>
+                    <%= "disabled" unless configured || m.free %>>
+                    <%= m.label %><%= " (Free)" if m.free && !m.label.include?("Free") %>
+                  </option>
+                <% end %>
+              </optgroup>
+            <% end %>
+          </select>
+          <p class="mt-1 text-xs text-gray-500">Free models can be used without an API key.</p>
+        </div>
+
+        <div>
+          <label for="preferred_provider_id" class="block text-sm font-medium text-gray-700 mb-1">Preferred Provider</label>
+          <select name="preferred_provider_id" id="preferred_provider_id" class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500">
+            <option value="">No preference</option>
+            <% @providers.each do |provider| %>
+              <option value="<%= provider.id %>" <%= "selected" if @preference.preferred_provider_id == provider.id %>>
+                <%= provider.name %><%= " \u2713" if provider.configured? %>
+              </option>
+            <% end %>
+          </select>
+          <p class="mt-1 text-xs text-gray-500">Route all requests through this provider when possible.</p>
+        </div>
+
+        <div>
+          <label for="temperature" class="block text-sm font-medium text-gray-700 mb-1">Temperature</label>
+          <input type="number" name="temperature" id="temperature" value="<%= @preference.temperature %>" min="0" max="2" step="0.1"
+                 class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500">
+          <p class="mt-1 text-xs text-gray-500">Controls randomness (0.0 - 2.0). Lower = focused, higher = creative.</p>
+        </div>
+
+        <div>
+          <label for="max_tokens" class="block text-sm font-medium text-gray-700 mb-1">Max Tokens</label>
+          <input type="number" name="max_tokens" id="max_tokens" value="<%= @preference.max_tokens %>" min="1" max="128000" step="1"
+                 class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500">
+          <p class="mt-1 text-xs text-gray-500">Maximum number of tokens in the response.</p>
+        </div>
+
+        <div class="pt-2">
+          <%= f.submit "Save Preferences", class: "inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-primary-600 rounded-md hover:bg-primary-700 cursor-pointer" %>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+
+  <div class="mt-6">
+    <%= ds_card do %>
+      <h2 class="text-lg font-semibold text-gray-900 mb-4">Available Models</h2>
+      <p class="text-sm text-gray-500 mb-3">
+        Models from configured providers are available for use. Free-tier models work without an API key.
+      </p>
+      <%= ds_data_table(
+        columns: [
+          { key: :provider, label: "Provider" },
+          { key: :model,    label: "Model" },
+          { key: :status,   label: "Status" }
+        ],
+        rows: @models.map { |m|
+          configured = m.provider.configured?
+          {
+            provider: m.provider.name,
+            model: m.label,
+            status: if m.free
+                      ds_badge(label: "Free", color: :blue)
+                    elsif configured
+                      ds_badge(label: "Available", color: :green)
+                    else
+                      ds_badge(label: "No API Key", color: :gray)
+                    end
+          }
+        }
+      ) %>
+    <% end %>
+  </div>
+
+  <div class="mt-6">
+    <%= ds_card do %>
+      <h2 class="text-lg font-semibold text-gray-900 mb-4">API Keys</h2>
+      <p class="text-sm text-gray-500 mb-3">
+        API keys are configured via environment variables. Edit <code class="text-xs bg-gray-100 px-1 py-0.5 rounded">docker/.env.secrets</code> to set them.
+      </p>
+      <div class="space-y-2">
+        <% @api_keys.each do |key, is_set| %>
+          <div class="flex justify-between items-center text-sm">
+            <code class="text-xs bg-gray-100 px-1.5 py-0.5 rounded"><%= key %></code>
+            <%= ds_badge label: (is_set ? "Configured" : "Not set"), color: (is_set ? :green : :gray) %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>
