@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>engine-llm — Reflection</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: { 50:'#eff6ff',100:'#dbeafe',200:'#bfdbfe',300:'#93c5fd',400:'#60a5fa',500:'#3b82f6',600:'#2563eb',700:'#1d4ed8',800:'#1e40af',900:'#1e3a8a' },
+            success: { 50:'#f0fdf4',100:'#dcfce7',200:'#bbf7d0',500:'#22c55e',600:'#16a34a',700:'#15803d' },
+            danger:  { 50:'#fef2f2',100:'#fee2e2',500:'#ef4444',600:'#dc2626',700:'#b91c1c' },
+            warning: { 50:'#fffbeb',100:'#fef3c7',500:'#f59e0b',600:'#d97706',700:'#b45309' }
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            mono: ['JetBrains Mono', 'SF Mono', 'Monaco', 'Consolas', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body class="bg-gray-50 text-gray-900 font-sans antialiased">
+
+<div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+  <!-- Navigation bar -->
+  <div class="flex items-center justify-between mb-6">
+    <div class="flex items-center gap-3">
+      <a href="../../../../../doc/reflection/catalog.html" class="inline-flex items-center gap-1.5 text-sm font-medium text-gray-500 hover:text-primary-600 transition-colors">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+        Catalog
+      </a>
+    </div>
+    <a href="vscode://file//Users/ericlaquer/Documents/GitHub/ecosystems/top/engine/engine-llm" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-primary-700 bg-primary-50 rounded-lg hover:bg-primary-100 transition-colors border border-primary-200">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+      Open in VS Code
+    </a>
+  </div>
+
+  <!-- Header -->
+  <div class="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden mb-6">
+    <div class="p-4 sm:p-6">
+      <h1 class="text-2xl font-bold text-gray-900">engine-llm</h1>
+      <p class="text-gray-500 mt-1">LLM chat engine for Ecosystems</p>
+      <div class="flex flex-wrap gap-2 mt-3">
+        <span class="inline-flex items-center font-medium rounded-full px-2.5 py-0.5 text-xs bg-primary-100 text-primary-700">v0.5.0</span>
+        <span class="inline-flex items-center font-medium rounded-full px-2.5 py-0.5 text-xs bg-gray-100 text-gray-700">EngineLlm</span>
+        <span class="inline-flex items-center font-medium rounded-full px-2.5 py-0.5 text-xs bg-blue-100 text-blue-700">5 models</span>
+        <span class="inline-flex items-center font-medium rounded-full px-2.5 py-0.5 text-xs bg-green-100 text-green-700">4 controllers</span>
+        <span class="inline-flex items-center font-medium rounded-full px-2.5 py-0.5 text-xs bg-amber-100 text-amber-700">5 tables</span>
+      </div>
+      <div class="text-xs text-gray-400 mt-2 font-mono">top/engine/engine-llm</div>
+    </div>
+  </div>
+
+
+
+
+  <!-- Tab navigation -->
+  <div class="border-b border-gray-200 mb-6">
+    <nav class="flex flex-wrap gap-1 -mb-px" role="tablist">
+      <button onclick="switchTab('description')" id="tab-description"
+              class="tab-btn inline-flex items-center gap-1.5 px-4 py-2.5 text-sm font-medium rounded-t-lg border-b-2 transition-colors
+                     border-primary-500 text-primary-700 bg-white"
+              role="tab" aria-selected="true">
+        Description
+      </button>
+      <button onclick="switchTab('deps')" id="tab-deps"
+              class="tab-btn inline-flex items-center gap-1.5 px-4 py-2.5 text-sm font-medium rounded-t-lg border-b-2 transition-colors
+                     border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+              role="tab" aria-selected="false">
+        Dependencies
+        <span class="inline-flex items-center font-medium rounded-full px-1.5 py-0.5 text-xs bg-gray-100 text-gray-600">3</span>
+      </button>
+      <button onclick="switchTab('models')" id="tab-models"
+              class="tab-btn inline-flex items-center gap-1.5 px-4 py-2.5 text-sm font-medium rounded-t-lg border-b-2 transition-colors
+                     border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+              role="tab" aria-selected="false">
+        Models
+        <span class="inline-flex items-center font-medium rounded-full px-1.5 py-0.5 text-xs bg-gray-100 text-gray-600">5</span>
+      </button>
+      <button onclick="switchTab('controllers')" id="tab-controllers"
+              class="tab-btn inline-flex items-center gap-1.5 px-4 py-2.5 text-sm font-medium rounded-t-lg border-b-2 transition-colors
+                     border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+              role="tab" aria-selected="false">
+        Controllers
+        <span class="inline-flex items-center font-medium rounded-full px-1.5 py-0.5 text-xs bg-gray-100 text-gray-600">4</span>
+      </button>
+      <button onclick="switchTab('routes')" id="tab-routes"
+              class="tab-btn inline-flex items-center gap-1.5 px-4 py-2.5 text-sm font-medium rounded-t-lg border-b-2 transition-colors
+                     border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+              role="tab" aria-selected="false">
+        Routes
+        <span class="inline-flex items-center font-medium rounded-full px-1.5 py-0.5 text-xs bg-gray-100 text-gray-600">4</span>
+      </button>
+      <button onclick="switchTab('schema')" id="tab-schema"
+              class="tab-btn inline-flex items-center gap-1.5 px-4 py-2.5 text-sm font-medium rounded-t-lg border-b-2 transition-colors
+                     border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+              role="tab" aria-selected="false">
+        Schema
+        <span class="inline-flex items-center font-medium rounded-full px-1.5 py-0.5 text-xs bg-gray-100 text-gray-600">5</span>
+      </button>
+      <button onclick="switchTab('architecture')" id="tab-architecture"
+              class="tab-btn inline-flex items-center gap-1.5 px-4 py-2.5 text-sm font-medium rounded-t-lg border-b-2 transition-colors
+                     border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+              role="tab" aria-selected="false">
+        Architecture
+      </button>
+    </nav>
+  </div>
+
+  <!-- Description -->
+  <div id="panel-description" class="tab-panel">
+  <div class="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden mb-6">
+    <div class="p-4 sm:p-6">
+      <p class="text-sm text-gray-700">LLM chat engine for Ecosystems</p>
+      <p class="text-sm text-gray-600 mt-2">Rails Engine providing multi-provider LLM chat UI with Raix 2.0, </p>
+    </div>
+  </div>
+  </div>
+
+
+  <div id="panel-deps" class="tab-panel hidden">
+  <div class="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden mb-6">
+    <div class="p-4 sm:p-6">
+      <div class="flex flex-wrap gap-2">
+        <span class="inline-flex items-center font-medium rounded-full px-2.5 py-0.5 text-xs bg-amber-100 text-amber-700">rails &gt;= 7.1</span>
+        <span class="inline-flex items-center font-medium rounded-full px-2.5 py-0.5 text-xs bg-amber-100 text-amber-700">view_component &gt;= 4.0</span>
+        <span class="inline-flex items-center font-medium rounded-full px-2.5 py-0.5 text-xs bg-amber-100 text-amber-700">raix</span>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div id="panel-models" class="tab-panel hidden">
+  <div class="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden mb-6">
+    <div class="divide-y divide-gray-100">
+      <div class="p-4 sm:p-6">
+        <div class="flex items-start justify-between">
+          <h3 class="text-base font-semibold text-gray-900">
+            <span class="text-gray-400 font-normal">EngineLlm::</span>
+            Conversation
+            <span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-gray-100 text-gray-700 ml-2">cl_conversations</span>
+          </h3>
+          <a href="vscode://file//Users/ericlaquer/Documents/GitHub/ecosystems/top/engine/engine-llm/app/models/engine_llm/conversation.rb" class="flex-shrink-0 ml-2 text-gray-400 hover:text-primary-600 transition-colors" title="Open in VS Code">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+          </a>
+        </div>
+        <div class="text-xs text-gray-400 font-mono mt-0.5">app/models/engine_llm/conversation.rb</div>
+        <div class="flex flex-wrap gap-1 mt-1.5">
+          <span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-amber-100 text-amber-700">validates :title</span>
+        </div>
+      </div>
+      <div class="p-4 sm:p-6">
+        <div class="flex items-start justify-between">
+          <h3 class="text-base font-semibold text-gray-900">
+            <span class="text-gray-400 font-normal">EngineLlm::</span>
+            Preference
+            <span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-gray-100 text-gray-700 ml-2">cl_preferences</span>
+          </h3>
+          <a href="vscode://file//Users/ericlaquer/Documents/GitHub/ecosystems/top/engine/engine-llm/app/models/engine_llm/preference.rb" class="flex-shrink-0 ml-2 text-gray-400 hover:text-primary-600 transition-colors" title="Open in VS Code">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+          </a>
+        </div>
+        <div class="text-xs text-gray-400 font-mono mt-0.5">app/models/engine_llm/preference.rb</div>
+        <div class="flex flex-wrap gap-1 mt-2">
+          <span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-blue-100 text-blue-700">belongs_to :default_model</span>
+          <span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-blue-100 text-blue-700">belongs_to :preferred_provider</span>
+        </div>
+      </div>
+      <div class="p-4 sm:p-6">
+        <div class="flex items-start justify-between">
+          <h3 class="text-base font-semibold text-gray-900">
+            <span class="text-gray-400 font-normal">EngineLlm::</span>
+            Provider
+            <span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-gray-100 text-gray-700 ml-2">cl_providers</span>
+          </h3>
+          <a href="vscode://file//Users/ericlaquer/Documents/GitHub/ecosystems/top/engine/engine-llm/app/models/engine_llm/provider.rb" class="flex-shrink-0 ml-2 text-gray-400 hover:text-primary-600 transition-colors" title="Open in VS Code">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+          </a>
+        </div>
+        <div class="text-xs text-gray-400 font-mono mt-0.5">app/models/engine_llm/provider.rb</div>
+        <div class="flex flex-wrap gap-1 mt-2">
+          <span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-blue-100 text-blue-700">has_many :provider_models</span>
+        </div>
+        <div class="flex flex-wrap gap-1 mt-1.5">
+          <span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-purple-100 text-purple-700">scope :ordered</span>
+          <span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-purple-100 text-purple-700">scope :active</span>
+        </div>
+      </div>
+      <div class="p-4 sm:p-6">
+        <div class="flex items-start justify-between">
+          <h3 class="text-base font-semibold text-gray-900">
+            <span class="text-gray-400 font-normal">EngineLlm::</span>
+            ProviderModel
+            <span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-gray-100 text-gray-700 ml-2">cl_provider_models</span>
+          </h3>
+          <a href="vscode://file//Users/ericlaquer/Documents/GitHub/ecosystems/top/engine/engine-llm/app/models/engine_llm/provider_model.rb" class="flex-shrink-0 ml-2 text-gray-400 hover:text-primary-600 transition-colors" title="Open in VS Code">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+          </a>
+        </div>
+        <div class="text-xs text-gray-400 font-mono mt-0.5">app/models/engine_llm/provider_model.rb</div>
+        <div class="flex flex-wrap gap-1 mt-2">
+          <span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-blue-100 text-blue-700">belongs_to :provider</span>
+        </div>
+        <div class="flex flex-wrap gap-1 mt-1.5">
+          <span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-purple-100 text-purple-700">scope :ordered</span>
+          <span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-purple-100 text-purple-700">scope :active</span>
+          <span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-purple-100 text-purple-700">scope :free_tier</span>
+        </div>
+      </div>
+      <div class="p-4 sm:p-6">
+        <div class="flex items-start justify-between">
+          <h3 class="text-base font-semibold text-gray-900">
+            <span class="text-gray-400 font-normal">EngineLlm::</span>
+            Setting
+            <span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-gray-100 text-gray-700 ml-2">cl_settings</span>
+          </h3>
+          <a href="vscode://file//Users/ericlaquer/Documents/GitHub/ecosystems/top/engine/engine-llm/app/models/engine_llm/setting.rb" class="flex-shrink-0 ml-2 text-gray-400 hover:text-primary-600 transition-colors" title="Open in VS Code">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+          </a>
+        </div>
+        <div class="text-xs text-gray-400 font-mono mt-0.5">app/models/engine_llm/setting.rb</div>
+        <div class="flex flex-wrap gap-1 mt-1.5">
+          <span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-amber-100 text-amber-700">validates :key</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div id="panel-controllers" class="tab-panel hidden">
+  <div class="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden mb-6">
+    <div class="divide-y divide-gray-100">
+      <div class="p-4 sm:p-6">
+        <div class="flex items-start justify-between">
+          <h3 class="text-base font-semibold text-gray-900">
+            <span class="text-gray-400 font-normal">EngineLlm::</span>
+            ConversationsController
+          </h3>
+          <a href="vscode://file//Users/ericlaquer/Documents/GitHub/ecosystems/top/engine/engine-llm/app/controllers/engine_llm/conversations_controller.rb" class="flex-shrink-0 ml-2 text-gray-400 hover:text-primary-600 transition-colors" title="Open in VS Code">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+          </a>
+        </div>
+        <div class="text-xs text-gray-400 font-mono mt-0.5">app/controllers/engine_llm/conversations_controller.rb</div>
+        <div class="flex flex-wrap gap-1 mt-2">
+          <span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-gray-100 text-gray-700">before_action :find_conversation</span>
+        </div>
+        <div class="flex flex-wrap gap-1 mt-1.5">
+          <span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-green-100 text-green-700">index</span>
+          <span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-green-100 text-green-700">show</span>
+          <span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-green-100 text-green-700">create</span>
+          <span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-green-100 text-green-700">destroy</span>
+          <span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-green-100 text-green-700">find_conversation</span>
+        </div>
+      </div>
+      <div class="p-4 sm:p-6">
+        <div class="flex items-start justify-between">
+          <h3 class="text-base font-semibold text-gray-900">
+            <span class="text-gray-400 font-normal">EngineLlm::</span>
+            MessagesController
+          </h3>
+          <a href="vscode://file//Users/ericlaquer/Documents/GitHub/ecosystems/top/engine/engine-llm/app/controllers/engine_llm/messages_controller.rb" class="flex-shrink-0 ml-2 text-gray-400 hover:text-primary-600 transition-colors" title="Open in VS Code">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+          </a>
+        </div>
+        <div class="text-xs text-gray-400 font-mono mt-0.5">app/controllers/engine_llm/messages_controller.rb</div>
+        <div class="flex flex-wrap gap-1 mt-2">
+          <span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-gray-100 text-gray-700">before_action :find_conversation</span>
+        </div>
+        <div class="flex flex-wrap gap-1 mt-1.5">
+          <span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-green-100 text-green-700">create</span>
+          <span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-green-100 text-green-700">find_conversation</span>
+        </div>
+      </div>
+      <div class="p-4 sm:p-6">
+        <div class="flex items-start justify-between">
+          <h3 class="text-base font-semibold text-gray-900">
+            <span class="text-gray-400 font-normal">EngineLlm::</span>
+            PreferencesController
+          </h3>
+          <a href="vscode://file//Users/ericlaquer/Documents/GitHub/ecosystems/top/engine/engine-llm/app/controllers/engine_llm/preferences_controller.rb" class="flex-shrink-0 ml-2 text-gray-400 hover:text-primary-600 transition-colors" title="Open in VS Code">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+          </a>
+        </div>
+        <div class="text-xs text-gray-400 font-mono mt-0.5">app/controllers/engine_llm/preferences_controller.rb</div>
+        <div class="flex flex-wrap gap-1 mt-1.5">
+          <span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-green-100 text-green-700">show</span>
+          <span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-green-100 text-green-700">update</span>
+        </div>
+      </div>
+      <div class="p-4 sm:p-6">
+        <div class="flex items-start justify-between">
+          <h3 class="text-base font-semibold text-gray-900">
+            <span class="text-gray-400 font-normal">EngineLlm::</span>
+            SettingsController
+          </h3>
+          <a href="vscode://file//Users/ericlaquer/Documents/GitHub/ecosystems/top/engine/engine-llm/app/controllers/engine_llm/settings_controller.rb" class="flex-shrink-0 ml-2 text-gray-400 hover:text-primary-600 transition-colors" title="Open in VS Code">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+          </a>
+        </div>
+        <div class="text-xs text-gray-400 font-mono mt-0.5">app/controllers/engine_llm/settings_controller.rb</div>
+        <div class="flex flex-wrap gap-1 mt-1.5">
+          <span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-green-100 text-green-700">show</span>
+          <span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-green-100 text-green-700">update</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div id="panel-routes" class="tab-panel hidden">
+  <div class="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden mb-6">
+    <div class="p-4 sm:p-6 space-y-1">
+      <div class="font-mono text-sm">
+        <span class="inline-block min-w-[5rem] font-semibold uppercase
+ text-gray-500
+">resource</span>
+        <span class="text-gray-900">conversations</span>
+        <span class="text-gray-400">only: %i[index show create destroy]</span>
+      </div>
+      <div class="font-mono text-sm">
+        <span class="inline-block min-w-[5rem] font-semibold uppercase
+ text-gray-500
+">resource</span>
+        <span class="text-gray-900">messages</span>
+        <span class="text-gray-400">only: %i[create]</span>
+      </div>
+      <div class="font-mono text-sm">
+        <span class="inline-block min-w-[5rem] font-semibold uppercase
+ text-gray-500
+">resource</span>
+        <span class="text-gray-900">settings</span>
+        <span class="text-gray-400">only: %i[show update]</span>
+      </div>
+      <div class="font-mono text-sm">
+        <span class="inline-block min-w-[5rem] font-semibold uppercase
+ text-gray-500
+">resource</span>
+        <span class="text-gray-900">preferences</span>
+        <span class="text-gray-400">only: %i[show update]</span>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div id="panel-schema" class="tab-panel hidden">
+  <div class="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden mb-6">
+    <div class="divide-y divide-gray-100">
+      <div class="p-4 sm:p-6">
+        <h3 class="text-base font-semibold text-gray-900 mb-3">cl_conversations</h3>
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th class="px-4 py-3 text-xs font-medium text-gray-500 uppercase text-left">Column</th>
+                <th class="px-4 py-3 text-xs font-medium text-gray-500 uppercase text-left">Type</th>
+                <th class="px-4 py-3 text-xs font-medium text-gray-500 uppercase text-left">Options</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+              <tr>
+                <td class="px-4 py-3 text-sm text-gray-900 font-mono">title</td>
+                <td class="px-4 py-3 text-sm"><span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-green-100 text-green-700">string</span></td>
+                <td class="px-4 py-3 text-sm text-gray-500">null: false</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-sm text-gray-900 font-mono">transcript</td>
+                <td class="px-4 py-3 text-sm"><span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-green-100 text-green-700">text</span></td>
+                <td class="px-4 py-3 text-sm text-gray-500">default: &quot;[]&quot;</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-sm text-gray-900 font-mono">model</td>
+                <td class="px-4 py-3 text-sm"><span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-green-100 text-green-700">string</span></td>
+                <td class="px-4 py-3 text-sm text-gray-500"></td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-sm text-gray-900 font-mono">created_at</td>
+                <td class="px-4 py-3 text-sm"><span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-green-100 text-green-700">datetime</span></td>
+                <td class="px-4 py-3 text-sm text-gray-500"></td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-sm text-gray-900 font-mono">updated_at</td>
+                <td class="px-4 py-3 text-sm"><span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-green-100 text-green-700">datetime</span></td>
+                <td class="px-4 py-3 text-sm text-gray-500"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="p-4 sm:p-6">
+        <h3 class="text-base font-semibold text-gray-900 mb-3">cl_settings</h3>
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th class="px-4 py-3 text-xs font-medium text-gray-500 uppercase text-left">Column</th>
+                <th class="px-4 py-3 text-xs font-medium text-gray-500 uppercase text-left">Type</th>
+                <th class="px-4 py-3 text-xs font-medium text-gray-500 uppercase text-left">Options</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+              <tr>
+                <td class="px-4 py-3 text-sm text-gray-900 font-mono">key</td>
+                <td class="px-4 py-3 text-sm"><span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-green-100 text-green-700">string</span></td>
+                <td class="px-4 py-3 text-sm text-gray-500">null: false</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-sm text-gray-900 font-mono">value</td>
+                <td class="px-4 py-3 text-sm"><span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-green-100 text-green-700">text</span></td>
+                <td class="px-4 py-3 text-sm text-gray-500"></td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-sm text-gray-900 font-mono">created_at</td>
+                <td class="px-4 py-3 text-sm"><span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-green-100 text-green-700">datetime</span></td>
+                <td class="px-4 py-3 text-sm text-gray-500"></td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-sm text-gray-900 font-mono">updated_at</td>
+                <td class="px-4 py-3 text-sm"><span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-green-100 text-green-700">datetime</span></td>
+                <td class="px-4 py-3 text-sm text-gray-500"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="flex flex-wrap gap-1 mt-3">
+          <span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-purple-100 text-purple-700">index: key (unique)</span>
+        </div>
+      </div>
+      <div class="p-4 sm:p-6">
+        <h3 class="text-base font-semibold text-gray-900 mb-3">cl_providers</h3>
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th class="px-4 py-3 text-xs font-medium text-gray-500 uppercase text-left">Column</th>
+                <th class="px-4 py-3 text-xs font-medium text-gray-500 uppercase text-left">Type</th>
+                <th class="px-4 py-3 text-xs font-medium text-gray-500 uppercase text-left">Options</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+              <tr>
+                <td class="px-4 py-3 text-sm text-gray-900 font-mono">name</td>
+                <td class="px-4 py-3 text-sm"><span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-green-100 text-green-700">string</span></td>
+                <td class="px-4 py-3 text-sm text-gray-500">null: false</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-sm text-gray-900 font-mono">slug</td>
+                <td class="px-4 py-3 text-sm"><span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-green-100 text-green-700">string</span></td>
+                <td class="px-4 py-3 text-sm text-gray-500">null: false</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-sm text-gray-900 font-mono">env_key</td>
+                <td class="px-4 py-3 text-sm"><span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-green-100 text-green-700">string</span></td>
+                <td class="px-4 py-3 text-sm text-gray-500">null: false</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-sm text-gray-900 font-mono">api_base_url</td>
+                <td class="px-4 py-3 text-sm"><span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-green-100 text-green-700">string</span></td>
+                <td class="px-4 py-3 text-sm text-gray-500"></td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-sm text-gray-900 font-mono">active</td>
+                <td class="px-4 py-3 text-sm"><span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-green-100 text-green-700">boolean</span></td>
+                <td class="px-4 py-3 text-sm text-gray-500">null: false, default: true</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-sm text-gray-900 font-mono">position</td>
+                <td class="px-4 py-3 text-sm"><span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-green-100 text-green-700">integer</span></td>
+                <td class="px-4 py-3 text-sm text-gray-500">null: false, default: 0</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-sm text-gray-900 font-mono">created_at</td>
+                <td class="px-4 py-3 text-sm"><span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-green-100 text-green-700">datetime</span></td>
+                <td class="px-4 py-3 text-sm text-gray-500"></td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-sm text-gray-900 font-mono">updated_at</td>
+                <td class="px-4 py-3 text-sm"><span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-green-100 text-green-700">datetime</span></td>
+                <td class="px-4 py-3 text-sm text-gray-500"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="flex flex-wrap gap-1 mt-3">
+          <span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-purple-100 text-purple-700">index: slug (unique)</span>
+        </div>
+      </div>
+      <div class="p-4 sm:p-6">
+        <h3 class="text-base font-semibold text-gray-900 mb-3">cl_provider_models</h3>
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th class="px-4 py-3 text-xs font-medium text-gray-500 uppercase text-left">Column</th>
+                <th class="px-4 py-3 text-xs font-medium text-gray-500 uppercase text-left">Type</th>
+                <th class="px-4 py-3 text-xs font-medium text-gray-500 uppercase text-left">Options</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+              <tr>
+                <td class="px-4 py-3 text-sm text-gray-900 font-mono">provider</td>
+                <td class="px-4 py-3 text-sm"><span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-green-100 text-green-700">references</span></td>
+                <td class="px-4 py-3 text-sm text-gray-500">null: false, foreign_key: { to_table: :cl_providers }</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-sm text-gray-900 font-mono">value</td>
+                <td class="px-4 py-3 text-sm"><span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-green-100 text-green-700">string</span></td>
+                <td class="px-4 py-3 text-sm text-gray-500">null: false</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-sm text-gray-900 font-mono">label</td>
+                <td class="px-4 py-3 text-sm"><span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-green-100 text-green-700">string</span></td>
+                <td class="px-4 py-3 text-sm text-gray-500">null: false</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-sm text-gray-900 font-mono">position</td>
+                <td class="px-4 py-3 text-sm"><span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-green-100 text-green-700">integer</span></td>
+                <td class="px-4 py-3 text-sm text-gray-500">null: false, default: 0</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-sm text-gray-900 font-mono">active</td>
+                <td class="px-4 py-3 text-sm"><span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-green-100 text-green-700">boolean</span></td>
+                <td class="px-4 py-3 text-sm text-gray-500">null: false, default: true</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-sm text-gray-900 font-mono">free</td>
+                <td class="px-4 py-3 text-sm"><span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-green-100 text-green-700">boolean</span></td>
+                <td class="px-4 py-3 text-sm text-gray-500">null: false, default: false</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-sm text-gray-900 font-mono">created_at</td>
+                <td class="px-4 py-3 text-sm"><span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-green-100 text-green-700">datetime</span></td>
+                <td class="px-4 py-3 text-sm text-gray-500"></td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-sm text-gray-900 font-mono">updated_at</td>
+                <td class="px-4 py-3 text-sm"><span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-green-100 text-green-700">datetime</span></td>
+                <td class="px-4 py-3 text-sm text-gray-500"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="flex flex-wrap gap-1 mt-3">
+          <span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-purple-100 text-purple-700">index: value (unique)</span>
+        </div>
+      </div>
+      <div class="p-4 sm:p-6">
+        <h3 class="text-base font-semibold text-gray-900 mb-3">cl_preferences</h3>
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th class="px-4 py-3 text-xs font-medium text-gray-500 uppercase text-left">Column</th>
+                <th class="px-4 py-3 text-xs font-medium text-gray-500 uppercase text-left">Type</th>
+                <th class="px-4 py-3 text-xs font-medium text-gray-500 uppercase text-left">Options</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+              <tr>
+                <td class="px-4 py-3 text-sm text-gray-900 font-mono">default_model</td>
+                <td class="px-4 py-3 text-sm"><span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-green-100 text-green-700">references</span></td>
+                <td class="px-4 py-3 text-sm text-gray-500">foreign_key: { to_table: :cl_provider_models }</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-sm text-gray-900 font-mono">preferred_provider</td>
+                <td class="px-4 py-3 text-sm"><span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-green-100 text-green-700">references</span></td>
+                <td class="px-4 py-3 text-sm text-gray-500">foreign_key: { to_table: :cl_providers }</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-sm text-gray-900 font-mono">temperature</td>
+                <td class="px-4 py-3 text-sm"><span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-green-100 text-green-700">decimal</span></td>
+                <td class="px-4 py-3 text-sm text-gray-500">precision: 3, scale: 1, null: false, default: 0.7</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-sm text-gray-900 font-mono">max_tokens</td>
+                <td class="px-4 py-3 text-sm"><span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-green-100 text-green-700">integer</span></td>
+                <td class="px-4 py-3 text-sm text-gray-500">null: false, default: 4096</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-sm text-gray-900 font-mono">created_at</td>
+                <td class="px-4 py-3 text-sm"><span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-green-100 text-green-700">datetime</span></td>
+                <td class="px-4 py-3 text-sm text-gray-500"></td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-sm text-gray-900 font-mono">updated_at</td>
+                <td class="px-4 py-3 text-sm"><span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-green-100 text-green-700">datetime</span></td>
+                <td class="px-4 py-3 text-sm text-gray-500"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div id="panel-architecture" class="tab-panel hidden">
+  <div class="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden mb-6">
+    <div class="p-4 sm:p-6 text-center overflow-x-auto">
+      <pre class="mermaid">
+graph TD
+
+  subgraph EngineLlm["engine-llm"]
+    subgraph grp_Conversation["Conversation"]
+      Conversation["Conversation"]
+    end
+    subgraph grp_Preference["Preference"]
+      Preference["Preference"]
+    end
+    subgraph grp_Provider["Provider"]
+      Provider["Provider"]
+      ProviderModel["ProviderModel"]
+    end
+    subgraph grp_Setting["Setting"]
+      Setting["Setting"]
+    end
+  end
+
+  rails["rails"]:::dep
+
+  view_component["view_component"]:::dep
+
+  raix["raix"]:::dep
+  EngineLlm --> rails
+  ProviderModel --> Provider
+
+  classDef dep fill:#f5f5f5,stroke:#999,stroke-dasharray:5,5
+  classDef atom fill:#dbeafe,stroke:#2563eb,color:#1e40af
+  classDef molecule fill:#dcfce7,stroke:#16a34a,color:#15803d
+  classDef organism fill:#fef3c7,stroke:#d97706,color:#b45309
+  classDef template fill:#f3e8ff,stroke:#9333ea,color:#7e22ce
+
+      </pre>
+    </div>
+  </div>
+  </div>
+
+
+  <footer class="mt-8 pt-4 border-t border-gray-200 text-xs text-gray-400">
+    Generated by <strong>refection</strong> v0.5.0 &mdash; 2026-02-18 14:21
+  </footer>
+
+</div>
+
+<script>
+var mermaidRendered = false;
+function switchTab(name) {
+  document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.add('hidden'); });
+  var panel = document.getElementById('panel-' + name);
+  if (panel) panel.classList.remove('hidden');
+  document.querySelectorAll('.tab-btn').forEach(function(b) {
+    b.classList.remove('border-primary-500', 'text-primary-700', 'bg-white');
+    b.classList.add('border-transparent', 'text-gray-500');
+    b.setAttribute('aria-selected', 'false');
+  });
+  var btn = document.getElementById('tab-' + name);
+  if (btn) {
+    btn.classList.add('border-primary-500', 'text-primary-700', 'bg-white');
+    btn.classList.remove('border-transparent', 'text-gray-500');
+    btn.setAttribute('aria-selected', 'true');
+  }
+  if ((name === 'architecture' || name === 'sequence') && !mermaidRendered) {
+    mermaidRendered = true;
+    if (window._mermaidReady) window._mermaidReady();
+  }
+}
+</script>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: false, theme: 'neutral' });
+  window._mermaidReady = function() {
+    mermaid.run({ querySelector: '.mermaid' });
+  };
+  if (document.querySelector('.tab-btn[aria-selected="true"]')?.id?.includes('architecture') ||
+      document.querySelector('.tab-btn[aria-selected="true"]')?.id?.includes('sequence')) {
+    window._mermaidReady();
+  }
+</script>
+</body>
+</html>

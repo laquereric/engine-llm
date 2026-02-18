@@ -1,0 +1,41 @@
+@startuml architecture
+!theme plain
+
+skinparam component {
+  BackgroundColor<<Engine>> #E1F5FE
+  BorderColor<<Engine>> #0288D1
+  BackgroundColor<<Gem>> #FFF3E0
+  BorderColor<<Gem>> #F57C00
+  BackgroundColor<<Model>> #E8F5E9
+  BorderColor<<Model>> #388E3C
+}
+
+title engine-llm\nLLM chat engine for Ecosystems
+
+package "engine-llm" <<Engine>> {
+  package "Conversation" {
+    component "Conversation" as Conversation
+  }
+  package "Preference" {
+    component "Preference" as Preference
+  }
+  package "Provider" {
+    component "Provider" as Provider
+    component "ProviderModel" as ProviderModel
+  }
+  package "Setting" {
+    component "Setting" as Setting
+  }
+}
+
+component "rails" as Rails #F5F5F5
+
+component "view_component" as ViewComponent #F5F5F5
+
+component "raix" as Raix #F5F5F5
+
+EngineLlm ..> Rails : depends on
+ProviderModel --> Provider : belongs_to
+
+caption LLM chat engine for Ecosystems
+@enduml
