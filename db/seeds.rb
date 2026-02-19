@@ -31,7 +31,9 @@ PROVIDERS = [
     { value: "ollama:gemma2",    label: "Gemma 2 (9B)",    position: 2, free: true },
     { value: "ollama:codellama", label: "Code Llama (7B)", position: 3, free: true },
     { value: "ollama:phi3",      label: "Phi-3 (3.8B)",    position: 4, free: true },
-    { value: "ollama:qwen2.5",   label: "Qwen 2.5",       position: 5, free: true }
+    { value: "ollama:qwen2.5",       label: "Qwen 2.5",           position: 5, free: true },
+    { value: "ollama:command-r",      label: "Command R (Cohere)",  position: 6, free: true },
+    { value: "ollama:command-r-plus", label: "Command R+ (Cohere)", position: 7, free: true }
   ] }
 ].freeze
 
