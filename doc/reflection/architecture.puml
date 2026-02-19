@@ -16,6 +16,10 @@ package "engine-llm" <<Engine>> {
   package "Conversation" {
     component "Conversation" as Conversation
   }
+  package "Heart" {
+    component "HeartBeat" as HeartBeat
+    component "HeartBeatExecution" as HeartBeatExecution
+  }
   package "Preference" {
     component "Preference" as Preference
   }

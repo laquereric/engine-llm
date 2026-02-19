@@ -26,6 +26,8 @@
         <cat:dependsOn rdf:resource="http://www.semanticweb.org/ericlaquer/ontologies/2026/1/rayswarm/view_component/#ViewComponent"/>
         <cat:dependsOn rdf:resource="http://www.semanticweb.org/ericlaquer/ontologies/2026/1/rayswarm/raix/#Raix"/>
         <cat:provides rdf:resource="#Conversation"/>
+        <cat:provides rdf:resource="#HeartBeat"/>
+        <cat:provides rdf:resource="#HeartBeatExecution"/>
         <cat:provides rdf:resource="#Preference"/>
         <cat:provides rdf:resource="#Provider"/>
         <cat:provides rdf:resource="#ProviderModel"/>
@@ -37,6 +39,20 @@
         <rdf:type rdf:resource="http://www.semanticweb.org/ericlaquer/ontologies/2026/1/rayswarm/catalog/#Component"/>
         <rdfs:label>Conversation</rdfs:label>
         <rdfs:comment>Model backed by table: cl_conversations</rdfs:comment>
+    </owl:NamedIndividual>
+
+    <!-- Component: HeartBeat -->
+    <owl:NamedIndividual rdf:about="#HeartBeat">
+        <rdf:type rdf:resource="http://www.semanticweb.org/ericlaquer/ontologies/2026/1/rayswarm/catalog/#Component"/>
+        <rdfs:label>HeartBeat</rdfs:label>
+        <rdfs:comment>Model backed by table: cl_heartbeats</rdfs:comment>
+    </owl:NamedIndividual>
+
+    <!-- Component: HeartBeatExecution -->
+    <owl:NamedIndividual rdf:about="#HeartBeatExecution">
+        <rdf:type rdf:resource="http://www.semanticweb.org/ericlaquer/ontologies/2026/1/rayswarm/catalog/#Component"/>
+        <rdfs:label>HeartBeatExecution</rdfs:label>
+        <rdfs:comment>Model backed by table: cl_heartbeat_executions</rdfs:comment>
     </owl:NamedIndividual>
 
     <!-- Component: Preference -->

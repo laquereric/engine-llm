@@ -51,11 +51,11 @@
       <h1 class="text-2xl font-bold text-gray-900">engine-llm</h1>
       <p class="text-gray-500 mt-1">LLM chat engine for Ecosystems</p>
       <div class="flex flex-wrap gap-2 mt-3">
-        <span class="inline-flex items-center font-medium rounded-full px-2.5 py-0.5 text-xs bg-primary-100 text-primary-700">v0.5.0</span>
+        <span class="inline-flex items-center font-medium rounded-full px-2.5 py-0.5 text-xs bg-primary-100 text-primary-700">v0.7.0</span>
         <span class="inline-flex items-center font-medium rounded-full px-2.5 py-0.5 text-xs bg-gray-100 text-gray-700">EngineLlm</span>
-        <span class="inline-flex items-center font-medium rounded-full px-2.5 py-0.5 text-xs bg-blue-100 text-blue-700">5 models</span>
+        <span class="inline-flex items-center font-medium rounded-full px-2.5 py-0.5 text-xs bg-blue-100 text-blue-700">7 models</span>
         <span class="inline-flex items-center font-medium rounded-full px-2.5 py-0.5 text-xs bg-green-100 text-green-700">4 controllers</span>
-        <span class="inline-flex items-center font-medium rounded-full px-2.5 py-0.5 text-xs bg-amber-100 text-amber-700">5 tables</span>
+        <span class="inline-flex items-center font-medium rounded-full px-2.5 py-0.5 text-xs bg-amber-100 text-amber-700">7 tables</span>
       </div>
       <div class="text-xs text-gray-400 mt-2 font-mono">top/engine/engine-llm</div>
     </div>
@@ -85,7 +85,7 @@
                      border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
               role="tab" aria-selected="false">
         Models
-        <span class="inline-flex items-center font-medium rounded-full px-1.5 py-0.5 text-xs bg-gray-100 text-gray-600">5</span>
+        <span class="inline-flex items-center font-medium rounded-full px-1.5 py-0.5 text-xs bg-gray-100 text-gray-600">7</span>
       </button>
       <button onclick="switchTab('controllers')" id="tab-controllers"
               class="tab-btn inline-flex items-center gap-1.5 px-4 py-2.5 text-sm font-medium rounded-t-lg border-b-2 transition-colors
@@ -106,7 +106,7 @@
                      border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
               role="tab" aria-selected="false">
         Schema
-        <span class="inline-flex items-center font-medium rounded-full px-1.5 py-0.5 text-xs bg-gray-100 text-gray-600">5</span>
+        <span class="inline-flex items-center font-medium rounded-full px-1.5 py-0.5 text-xs bg-gray-100 text-gray-600">7</span>
       </button>
       <button onclick="switchTab('architecture')" id="tab-architecture"
               class="tab-btn inline-flex items-center gap-1.5 px-4 py-2.5 text-sm font-medium rounded-t-lg border-b-2 transition-colors
@@ -123,6 +123,17 @@
     <div class="p-4 sm:p-6">
       <p class="text-sm text-gray-700">LLM chat engine for Ecosystems</p>
       <p class="text-sm text-gray-600 mt-2">Rails Engine providing multi-provider LLM chat UI with Raix 2.0, </p>
+    </div>
+  </div>
+  <div class="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden mb-6">
+    <div class="p-4 sm:p-6 border-b border-gray-100">
+      <h2 class="text-lg font-semibold text-gray-900">README</h2>
+    </div>
+    <div class="p-4 sm:p-6">
+      <h2 class="text-lg font-semibold text-gray-900 mt-4 mb-2">Llm</h2>
+<p class="text-sm text-gray-700 my-2">Engine component for the Ecosystems platform.</p>
+<h3 class="text-base font-semibold text-gray-900 mt-4 mb-2">Contributing</h3>
+<p class="text-sm text-gray-700 my-2">Bug reports and pull requests are welcome on GitHub at https://github.com/laquereric/engine-llm.</p>
     </div>
   </div>
   </div>
@@ -158,6 +169,32 @@
         <div class="flex flex-wrap gap-1 mt-1.5">
           <span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-amber-100 text-amber-700">validates :title</span>
         </div>
+      </div>
+      <div class="p-4 sm:p-6">
+        <div class="flex items-start justify-between">
+          <h3 class="text-base font-semibold text-gray-900">
+            <span class="text-gray-400 font-normal">EngineLlm::</span>
+            HeartBeat
+            <span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-gray-100 text-gray-700 ml-2">cl_heartbeats</span>
+          </h3>
+          <a href="vscode://file//Users/ericlaquer/Documents/GitHub/ecosystems/top/engine/engine-llm/app/models/engine_llm/heart_beat.rb" class="flex-shrink-0 ml-2 text-gray-400 hover:text-primary-600 transition-colors" title="Open in VS Code">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+          </a>
+        </div>
+        <div class="text-xs text-gray-400 font-mono mt-0.5">app/models/engine_llm/heart_beat.rb</div>
+      </div>
+      <div class="p-4 sm:p-6">
+        <div class="flex items-start justify-between">
+          <h3 class="text-base font-semibold text-gray-900">
+            <span class="text-gray-400 font-normal">EngineLlm::</span>
+            HeartBeatExecution
+            <span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-gray-100 text-gray-700 ml-2">cl_heartbeat_executions</span>
+          </h3>
+          <a href="vscode://file//Users/ericlaquer/Documents/GitHub/ecosystems/top/engine/engine-llm/app/models/engine_llm/heart_beat_execution.rb" class="flex-shrink-0 ml-2 text-gray-400 hover:text-primary-600 transition-colors" title="Open in VS Code">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+          </a>
+        </div>
+        <div class="text-xs text-gray-400 font-mono mt-0.5">app/models/engine_llm/heart_beat_execution.rb</div>
       </div>
       <div class="p-4 sm:p-6">
         <div class="flex items-start justify-between">
@@ -599,6 +636,155 @@
           </table>
         </div>
       </div>
+      <div class="p-4 sm:p-6">
+        <h3 class="text-base font-semibold text-gray-900 mb-3">cl_heartbeats</h3>
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th class="px-4 py-3 text-xs font-medium text-gray-500 uppercase text-left">Column</th>
+                <th class="px-4 py-3 text-xs font-medium text-gray-500 uppercase text-left">Type</th>
+                <th class="px-4 py-3 text-xs font-medium text-gray-500 uppercase text-left">Options</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+              <tr>
+                <td class="px-4 py-3 text-sm text-gray-900 font-mono">task_name</td>
+                <td class="px-4 py-3 text-sm"><span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-green-100 text-green-700">string</span></td>
+                <td class="px-4 py-3 text-sm text-gray-500">null: false</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-sm text-gray-900 font-mono">description</td>
+                <td class="px-4 py-3 text-sm"><span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-green-100 text-green-700">text</span></td>
+                <td class="px-4 py-3 text-sm text-gray-500"></td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-sm text-gray-900 font-mono">interval_seconds</td>
+                <td class="px-4 py-3 text-sm"><span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-green-100 text-green-700">integer</span></td>
+                <td class="px-4 py-3 text-sm text-gray-500">null: false</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-sm text-gray-900 font-mono">cron_expression</td>
+                <td class="px-4 py-3 text-sm"><span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-green-100 text-green-700">string</span></td>
+                <td class="px-4 py-3 text-sm text-gray-500"></td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-sm text-gray-900 font-mono">last_run_at</td>
+                <td class="px-4 py-3 text-sm"><span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-green-100 text-green-700">datetime</span></td>
+                <td class="px-4 py-3 text-sm text-gray-500"></td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-sm text-gray-900 font-mono">next_run_at</td>
+                <td class="px-4 py-3 text-sm"><span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-green-100 text-green-700">datetime</span></td>
+                <td class="px-4 py-3 text-sm text-gray-500"></td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-sm text-gray-900 font-mono">enabled</td>
+                <td class="px-4 py-3 text-sm"><span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-green-100 text-green-700">boolean</span></td>
+                <td class="px-4 py-3 text-sm text-gray-500">null: false, default: true</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-sm text-gray-900 font-mono">priority</td>
+                <td class="px-4 py-3 text-sm"><span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-green-100 text-green-700">integer</span></td>
+                <td class="px-4 py-3 text-sm text-gray-500">null: false, default: 0</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-sm text-gray-900 font-mono">max_retries</td>
+                <td class="px-4 py-3 text-sm"><span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-green-100 text-green-700">integer</span></td>
+                <td class="px-4 py-3 text-sm text-gray-500">null: false, default: 3</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-sm text-gray-900 font-mono">retry_delay_seconds</td>
+                <td class="px-4 py-3 text-sm"><span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-green-100 text-green-700">integer</span></td>
+                <td class="px-4 py-3 text-sm text-gray-500">null: false, default: 60</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-sm text-gray-900 font-mono">metadata</td>
+                <td class="px-4 py-3 text-sm"><span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-green-100 text-green-700">json</span></td>
+                <td class="px-4 py-3 text-sm text-gray-500"></td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-sm text-gray-900 font-mono">created_at</td>
+                <td class="px-4 py-3 text-sm"><span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-green-100 text-green-700">datetime</span></td>
+                <td class="px-4 py-3 text-sm text-gray-500"></td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-sm text-gray-900 font-mono">updated_at</td>
+                <td class="px-4 py-3 text-sm"><span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-green-100 text-green-700">datetime</span></td>
+                <td class="px-4 py-3 text-sm text-gray-500"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="flex flex-wrap gap-1 mt-3">
+          <span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-purple-100 text-purple-700">index: task_name (unique)</span>
+          <span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-purple-100 text-purple-700">index: next_run_at</span>
+        </div>
+      </div>
+      <div class="p-4 sm:p-6">
+        <h3 class="text-base font-semibold text-gray-900 mb-3">cl_heartbeat_executions</h3>
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th class="px-4 py-3 text-xs font-medium text-gray-500 uppercase text-left">Column</th>
+                <th class="px-4 py-3 text-xs font-medium text-gray-500 uppercase text-left">Type</th>
+                <th class="px-4 py-3 text-xs font-medium text-gray-500 uppercase text-left">Options</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+              <tr>
+                <td class="px-4 py-3 text-sm text-gray-900 font-mono">heartbeat</td>
+                <td class="px-4 py-3 text-sm"><span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-green-100 text-green-700">references</span></td>
+                <td class="px-4 py-3 text-sm text-gray-500">null: false, foreign_key: { to_table: :cl_heartbeats }</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-sm text-gray-900 font-mono">status</td>
+                <td class="px-4 py-3 text-sm"><span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-green-100 text-green-700">string</span></td>
+                <td class="px-4 py-3 text-sm text-gray-500">null: false</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-sm text-gray-900 font-mono">started_at</td>
+                <td class="px-4 py-3 text-sm"><span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-green-100 text-green-700">datetime</span></td>
+                <td class="px-4 py-3 text-sm text-gray-500">null: false</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-sm text-gray-900 font-mono">completed_at</td>
+                <td class="px-4 py-3 text-sm"><span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-green-100 text-green-700">datetime</span></td>
+                <td class="px-4 py-3 text-sm text-gray-500"></td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-sm text-gray-900 font-mono">duration_ms</td>
+                <td class="px-4 py-3 text-sm"><span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-green-100 text-green-700">integer</span></td>
+                <td class="px-4 py-3 text-sm text-gray-500"></td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-sm text-gray-900 font-mono">error_message</td>
+                <td class="px-4 py-3 text-sm"><span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-green-100 text-green-700">text</span></td>
+                <td class="px-4 py-3 text-sm text-gray-500"></td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-sm text-gray-900 font-mono">attempt_number</td>
+                <td class="px-4 py-3 text-sm"><span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-green-100 text-green-700">integer</span></td>
+                <td class="px-4 py-3 text-sm text-gray-500">null: false, default: 1</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-sm text-gray-900 font-mono">created_at</td>
+                <td class="px-4 py-3 text-sm"><span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-green-100 text-green-700">datetime</span></td>
+                <td class="px-4 py-3 text-sm text-gray-500"></td>
+              </tr>
+              <tr>
+                <td class="px-4 py-3 text-sm text-gray-900 font-mono">updated_at</td>
+                <td class="px-4 py-3 text-sm"><span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-green-100 text-green-700">datetime</span></td>
+                <td class="px-4 py-3 text-sm text-gray-500"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="flex flex-wrap gap-1 mt-3">
+          <span class="inline-flex items-center font-medium rounded-full px-2 py-0.5 text-xs bg-purple-100 text-purple-700">index: status</span>
+        </div>
+      </div>
     </div>
   </div>
   </div>
@@ -612,6 +798,10 @@ graph TD
   subgraph EngineLlm["engine-llm"]
     subgraph grp_Conversation["Conversation"]
       Conversation["Conversation"]
+    end
+    subgraph grp_Heart["Heart"]
+      HeartBeat["HeartBeat"]
+      HeartBeatExecution["HeartBeatExecution"]
     end
     subgraph grp_Preference["Preference"]
       Preference["Preference"]
@@ -646,7 +836,7 @@ graph TD
 
 
   <footer class="mt-8 pt-4 border-t border-gray-200 text-xs text-gray-400">
-    Generated by <strong>refection</strong> v0.5.0 &mdash; 2026-02-18 14:21
+    Generated by <strong>refection</strong> v0.7.0 &mdash; 2026-02-19 15:09
   </footer>
 
 </div>
