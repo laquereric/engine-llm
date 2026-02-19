@@ -3,9 +3,7 @@
 module EngineLlm
   class Engine < ::Rails::Engine
     isolate_namespace EngineLlm
-      include Platform::AppendMigrations
-      end
-    end
+    include Platform::AppendMigrations
 
     # Provide EngineCore module for the design system's TabNavigationComponent.
     # Only defined if not already provided by another engine (e.g. RayswarmCore).
@@ -79,7 +77,11 @@ module EngineLlm
           config.gemini_api_key = ENV["GEMINI_API_KEY"] if ENV["GEMINI_API_KEY"].present?
           config.openrouter_api_key = ENV["OPENROUTER_API_KEY"] if ENV["OPENROUTER_API_KEY"].present?
           config.zai_api_key = ENV["ZAI_API_KEY"] if ENV["ZAI_API_KEY"].present?
-          config.ollama_api_base = ENV.fetch("OLLAMA_BASE_URL", "http://localhost:11434") if ENV["OLLAMA_BASE_URL"].present?
+          if ENV["OLLAMA_BASE_URL"].present?
+            base = ENV.fetch("OLLAMA_BASE_URL", "http://localhost:11434")
+            base = "#{base}/v1" unless base.end_with?("/v1")
+            config.ollama_api_base = base
+          end
         end
       end
 
