@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "platform"
+require "library_platform"
 require "raix"
 require "engine_llm/version"
 require "engine_llm/tab_registry"

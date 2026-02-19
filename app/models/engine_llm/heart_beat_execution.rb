@@ -2,7 +2,7 @@
 
 module EngineLlm
   class HeartBeatExecution < ApplicationRecord
-    include Heartbeat::HeartBeatExecutionConcern
+    include LibraryHeartbeat::HeartBeatExecutionConcern
 
     self.table_name = "cl_heartbeat_executions"
   end

@@ -3,7 +3,7 @@
 module EngineLlm
   class Engine < ::Rails::Engine
     isolate_namespace EngineLlm
-    include Platform::AppendMigrations
+    include LibraryPlatform::AppendMigrations
 
     # Provide EngineCore module for the design system's TabNavigationComponent.
     # Only defined if not already provided by another engine (e.g. RayswarmCore).
