@@ -33,3 +33,5 @@ eco_gem "ecosystems-protege-launch"
 eco_gem "llm_engine"
 
 eco_gem "engine-design-system"
+eco_gem "heartbeat"
+eco_gem "platform"
