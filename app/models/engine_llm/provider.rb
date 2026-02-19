@@ -10,7 +10,11 @@ module EngineLlm
     scope :active,  -> { where(active: true) }
 
     def configured?
-      ENV[env_key].present?
+      if slug == "ollama"
+        ENV["OLLAMA_BASE_URL"].present?
+      else
+        ENV[env_key].present?
+      end
     end
 
     # Returns providers sorted: configured first, then unconfigured

@@ -79,6 +79,7 @@ module EngineLlm
           config.gemini_api_key = ENV["GEMINI_API_KEY"] if ENV["GEMINI_API_KEY"].present?
           config.openrouter_api_key = ENV["OPENROUTER_API_KEY"] if ENV["OPENROUTER_API_KEY"].present?
           config.zai_api_key = ENV["ZAI_API_KEY"] if ENV["ZAI_API_KEY"].present?
+          config.ollama_api_base = ENV.fetch("OLLAMA_BASE_URL", "http://localhost:11434") if ENV["OLLAMA_BASE_URL"].present?
         end
       end
 

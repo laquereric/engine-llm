@@ -24,6 +24,14 @@ PROVIDERS = [
     { value: "openrouter:anthropic/claude-sonnet-4",  label: "Claude Sonnet 4 (OpenRouter)", position: 0 },
     { value: "openrouter:google/gemini-2.5-pro",      label: "Gemini 2.5 Pro (OpenRouter)",  position: 1 },
     { value: "openrouter:moonshotai/kimi-k2",    label: "Kimi K2",               position: 2 }
+  ] },
+  { name: "Ollama", slug: "ollama", env_key: "OLLAMA_BASE_URL", position: 5, models: [
+    { value: "ollama:llama3",    label: "Llama 3 (8B)",    position: 0, free: true },
+    { value: "ollama:mistral",   label: "Mistral (7B)",    position: 1, free: true },
+    { value: "ollama:gemma2",    label: "Gemma 2 (9B)",    position: 2, free: true },
+    { value: "ollama:codellama", label: "Code Llama (7B)", position: 3, free: true },
+    { value: "ollama:phi3",      label: "Phi-3 (3.8B)",    position: 4, free: true },
+    { value: "ollama:qwen2.5",   label: "Qwen 2.5",       position: 5, free: true }
   ] }
 ].freeze
 
