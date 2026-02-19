@@ -20,16 +20,16 @@ eco_root = __dir__
 eco_root = File.dirname(eco_root) until File.exist?("#{eco_root}/Gemfile.eco")
 eval_gemfile "#{eco_root}/Gemfile.eco"
 
-eco_gem "ecosystem-citizen"
+eco_gem "library-citizen"
 
-# Transitive deps of ecosystem-citizen need path refs until gems are published
-eco_gem "service-exception"
-eco_gem "biological-it"
+# Transitive deps of library-citizen need path refs until gems are published
+eco_gem "library-exception"
+eco_gem "library-biological"
 eco_gem "service-protege"
-eco_gem "json-rpc-ld-client", require: "json_rpc_ld/client"
+eco_gem "library-json-rpc-ld-client"
 eco_gem "json-rpc-ld-server", require: "json_rpc_ld/server"
-eco_gem "ecosystem-manager-base"
-eco_gem "ecosystems-protege-launch"
+eco_gem "library-manager"
+eco_gem "library-semantics-rdf"
 eco_gem "llm_engine"
 
 eco_gem "engine-design-system"
