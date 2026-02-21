@@ -9,4 +9,6 @@ EngineLlm::Engine.routes.draw do
   resource :preferences, only: %i[show update]
 
   root "conversations#index"
+
+  EngineDesignSystem::StandardRoutes.draw(self)
 end
